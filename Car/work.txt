@@ -1,0 +1,39 @@
+
+
++ Resources:
+	- ackibot ROS2
+		https://github.com/cxxx1828/ROS2-Robot-Car
+			- Main
+		https://github.com/MIlivojeMilosavljevic/ackibot
+		https://www.youtube.com/watch?v=jF35XhkhHjg
+
+	- Ultrasound sensor stop
+		https://github.com/sarakr10/OSuRV_2024_mns
+			- Ultrasound FW:
+				https://github.com/sarakr10/OSuRV_2024_mns/blob/main/KompletnoBLDCServo/KompletnoBLDCiServo/KompletnoBLDCiServo.ino
+			- HW PCB
+		https://www.youtube.com/shorts/5UKdKlVmVpg
+
+	- ROS1 support
+		https://github.com/DusanDjordjic/OSuRV_2024
+		https://vm.tiktok.com/ZMSgtUbtJ
+
+- Tasks:
+	+ Merge Ultrasound support FW to Car control FW
+		- Car control FW:
+			FW/Arduino_Motor_Controller/Arduino_Motor_Controller.ino
+		- Ultrasound FW:
+			FW/KompletnoBLDCiServo/KompletnoBLDCiServo.ino
+	- Send distance measurement from Arduino to RPi
+		- 3 numbers of pulseIn result as integer ? dodati kasnije trenutno samo prednji ima svrhu
+		+ fw_pkgs.hpp
+		+ Arduino_Motor_Controller.ino
+	+ Calculate distance
+		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
+	+ Publish /ultrasound Float32[]
+		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
+		- ros2 topic echo /ultrasound
+	- node for stopping
+		- subscribuje /ultrasound
+	- node for parking sensor (Nemamo)
+		- node for beeping
