@@ -1,0 +1,79 @@
+Car:
+-Common:
+	-HW:
+		-Kicaid stuff
+-FW:
+	-Arduino_Motor_Controller:
+		-Arduino_Motor_Controller.ino (Main arudino code)
+		-ArduinoTest.ino
+		-avr_io_bitfields.h
+		-avr_type_traits.t
+		-CRC16.hpp
+		-fw_pgks.hpp
+		-sabertooth.c
+		-sabertooth.h
+		-SoftwareSerial2.cpp
+		-SoftwareSerial2.h
+		-type_shorts.h
+-HW:
+	-Arduino_Automotive_Ultrasound_Shield:
+		-Kicaid stuff
+-ROS2:
+	-ackitbot_ws:
+		-scripts:
+			-ackibot_basic_flow.sh
+			-ackitbot_flow.sh
+			-ackitbot_run_sbc.sh
+			-mars_joy_remove_pair.py
+			-mars_joy_remove.py
+			-mars_joy_sbc_from_pc.sh
+			-mars_joy.sh
+			-mybot_build.sh
+			-mybot_flow.sh
+			-mybot_install.sh
+		-src:
+			-ackibot_bringup:
+				-CMake and some python scripts
+			-ackibot_description:
+				-No idea
+			-ackibot_node:
+				-include:(same files from arduino, need to be copied after any changes)
+					-CRC16.hpp
+					-fw_pkgs.hpp
+					-type_shorts.h
+				-src:
+					-diff_drive_controller.cpp
+					-diff_drive_controller.hpp
+					-fw_node.cpp
+					-fw_node.hpp
+					-main.cpp
+					-odometry.cpp
+					-odometry.hpp
+					-sabertooth.c
+					-sabertooth.h
+			-ackibot_teleop:
+				-some scripts CMake and joy_node.cpp
+			-ackibot_utils:
+				-more scripts...
+			-joy:
+				-scripts...
+				-include:
+					-game_controller.hpp
+					-joy.hpp
+				-src:
+					-game_controller.cpp
+					-joy.cpp
+					-joy_enumerate_devices.cpp
+			-twist_mux:
+				-scripts ofc...
+				-bunch off .hpp in include
+				-test scripts
+				-src:
+					-twist_marker.cpp
+					-twist_mux.cpp
+					-twist_mux_diagnostics.cpp
+					-twist_mux_node.cpp
+-SW:
+	-paket_test.py
+-work.txt
+-README.md
