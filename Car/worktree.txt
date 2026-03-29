@@ -5,32 +5,32 @@ Car:
 -FW:
 	-Arduino_Motor_Controller:
 		-Arduino_Motor_Controller.ino (Main arudino code)
-		-ArduinoTest.ino
-		-avr_io_bitfields.h
-		-avr_type_traits.t
-		-CRC16.hpp
-		-fw_pgks.hpp
-		-sabertooth.c
-		-sabertooth.h
-		-SoftwareSerial2.cpp
-		-SoftwareSerial2.h
-		-type_shorts.h
+		-ArduinoTest.ino (testcode for ultrasound sensor)
+		-avr_io_bitfields.h (abstraction layer for AVR microcontrollers)
+		-avr_type_traits.t (not 100% sure, some open source "brain"?)
+		-CRC16.hpp (checksum)
+		-fw_pgks.hpp (our communication protocol)
+		-sabertooth.c (translator from PI to arduino?)
+		-sabertooth.h (error checking)
+		-SoftwareSerial2.cpp (allows as to turn any 2 digital pins into a serial port by using the CPU to handle the timing manually)
+		-SoftwareSerial2.h (implementation for Serial library for arduino)
+		-type_shorts.h (type definer?) (// Koristimo vlastite nazive tipova samo ako vec nisu definisani// Arduino core već definiše u8, u16, u32, pa da ne dođe do konflikta)
 -HW:
 	-Arduino_Automotive_Ultrasound_Shield:
 		-Kicaid stuff
 -ROS2:
 	-ackitbot_ws:
 		-scripts:
-			-ackibot_basic_flow.sh
-			-ackitbot_flow.sh
-			-ackitbot_run_sbc.sh
-			-mars_joy_remove_pair.py
-			-mars_joy_remove.py
-			-mars_joy_sbc_from_pc.sh
-			-mars_joy.sh
-			-mybot_build.sh
-			-mybot_flow.sh
-			-mybot_install.sh
+			-ackibot_basic_flow.sh (startup script, runs install and build)
+			-ackitbot_flow.sh (test script?)
+			-ackitbot_run_sbc.sh (starts the robot)
+			-mars_joy_remove_pair.py (pairs car and controller)
+			-mars_joy_remove.py (forgets connection)
+			-mars_joy_sbc_from_pc.sh (remote control?)
+			-mars_joy.sh (runs mars_joy_remove_pair.py to reset connection)
+			-mybot_build.sh (builds, recompiles code)
+			-mybot_flow.sh (run all)
+			-mybot_install.sh (first boot install)
 		-src:
 			-ackibot_bringup:
 				-CMake and some python scripts
