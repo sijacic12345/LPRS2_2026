@@ -7,7 +7,7 @@ Car:
 		-Arduino_Motor_Controller.ino (Main arudino code)
 		-ArduinoTest.ino (testcode for ultrasound sensor)
 		-avr_io_bitfields.h (abstraction layer for AVR microcontrollers)
-		-avr_type_traits.t (not 100% sure, some open source "brain"?)
+		-avr_type_traits.h (not 100% sure, some open source "brain"?)
 		-CRC16.hpp (checksum)
 		-fw_pgks.hpp (our communication protocol)
 		-sabertooth.c (translator from PI to arduino?)
@@ -42,15 +42,16 @@ Car:
 					-fw_pkgs.hpp
 					-type_shorts.h
 				-src:
-					-diff_drive_controller.cpp
-					-diff_drive_controller.hpp
-					-fw_node.cpp
-					-fw_node.hpp
-					-main.cpp
-					-odometry.cpp
-					-odometry.hpp
-					-sabertooth.c
-					-sabertooth.h
+					-diff_drive_controller.cpp (class with wheel separation and wheel radius)
+					-diff_drive_controller.hpp (differencial? ! nemamo diferencial !)
+					-fw_node.cpp (connects sabertooth and ROS2): needs more explanation !
+						-
+					-fw_node.hpp (fw_node contains important code)
+					-main.cpp (creates nodes)
+					-odometry.cpp (odometry for differential drive)?
+					-odometry.hpp (-||-)
+					-sabertooth.c (-||-)
+					-sabertooth.h (-||-)
 			-ackibot_teleop:
 				-some scripts CMake and joy_node.cpp
 			-ackibot_utils:
@@ -58,21 +59,21 @@ Car:
 			-joy:
 				-scripts...
 				-include:
-					-game_controller.hpp
-					-joy.hpp
+					-game_controller.hpp (bridge between ROS and IRL controller)
+					-joy.hpp ?
 				-src:
-					-game_controller.cpp
-					-joy.cpp
-					-joy_enumerate_devices.cpp
+					-game_controller.cpp (converts values for controller)
+					-joy.cpp ?
+					-joy_enumerate_devices.cpp (! gleda nesto controlere !)
 			-twist_mux:
 				-scripts ofc...
 				-bunch off .hpp in include
 				-test scripts
 				-src:
-					-twist_marker.cpp
-					-twist_mux.cpp
-					-twist_mux_diagnostics.cpp
-					-twist_mux_node.cpp
+					-twist_marker.cpp (Converts robot movement into RViz so we can virtually see robot movements) 
+					-twist_mux.cpp (Mux with priorities, locks a way of controlling if one of higher priority has been detected)
+					-twist_mux_diagnostics.cpp (Reports on locks from mux, diagnostics)
+					-twist_mux_node.cpp (inicialization of ROS)
 -SW:
 	-paket_test.py
 -work.txt
