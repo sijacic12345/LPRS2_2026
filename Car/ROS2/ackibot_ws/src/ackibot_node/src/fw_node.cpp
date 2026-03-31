@@ -256,7 +256,7 @@ void FW_Node::repeater__cb() {
 
 	// EMERGENCY STOP LOGIKA
     // Ako je prepreka bliža od 20cm (a nije 0, što može biti greška senzora)
-    if (ultrasound_distances[0] > 0.1f && ultrasound_distances[0] < 20.0f) {
+    if (ultrasound_distances[0] > 0.1f && ultrasound_distances[0] < 50.0f) {//privremeno 50cm
 		//Ukoliko pokusava da se krece napred kocimo, moze da ide samo u rikverc
 		if (final_speed > 0)
 		{
