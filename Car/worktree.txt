@@ -5,7 +5,6 @@ Car:
 -FW:
 	-Arduino_Motor_Controller:
 		-Arduino_Motor_Controller.ino (Main arudino code)
-		-ArduinoTest.ino (testcode for ultrasound sensor)
 		-avr_io_bitfields.h (abstraction layer for AVR microcontrollers)
 		-avr_type_traits.h (not 100% sure, some open source "brain"?)
 		-CRC16.hpp (checksum)
@@ -15,6 +14,8 @@ Car:
 		-SoftwareSerial2.cpp (allows as to turn any 2 digital pins into a serial port by using the CPU to handle the timing manually)
 		-SoftwareSerial2.h (implementation for Serial library for arduino)
 		-type_shorts.h (type definer?) (// Koristimo vlastite nazive tipova samo ako vec nisu definisani// Arduino core već definiše u8, u16, u32, pa da ne dođe do konflikta)
+	-Test code:
+		-ArduinoTest.ino (testcode for ultrasound sensor)
 -HW:
 	-Arduino_Automotive_Ultrasound_Shield:
 		-Kicaid stuff
