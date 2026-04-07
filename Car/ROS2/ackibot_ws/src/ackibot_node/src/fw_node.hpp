@@ -81,7 +81,16 @@ private:
 	std::vector<u8> wr_buf;
 	void write_pkg();
 	void front_sensor_check(const pkg_s2m_t & p);
-
+	
+	//NOVO
+	// ------------------------------
+	//Promeljiv kod u zavisnosti od potreba
+	const float minBrakeDistance = 20.0f;
+	const float maxBrakeDistance = 40.0f;
+	const double STOP_DURATION = 1.0; //u sekundama
+	// ------------------------------
+	bool is_Stopped=false;
+	rclcpp::Time stop_time;
 
 	std::thread read__thread;
 	void read__loop();

@@ -34,7 +34,9 @@ FW_Node::FW_Node(const std::string & usb_port)
 		rclcpp::NodeOptions().use_intra_process_comms(true)
 	),
 	//inicijalizacija clanova klase
-	watchdog_cnt(0)
+	watchdog_cnt(0),
+	is_Stopped(false),
+	stop_time(0,0,RCL_COS_TIME)
 {
 	RCLCPP_INFO(get_logger(), "Init FW_Node Node Main");
 
@@ -252,16 +254,34 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 //callback funkcija koja periodicno proverava i azurira stanje motora i ako nisu stigle nove komande
 void FW_Node::repeater__cb() {
 	watchdog_dec();
-	int16_t final_speed = this->target_speed;
-
+	rclcpp::Time now = this->get_clock()->now();
+	float speed_ratio = std::abs(static_cast<float>(final_speed)) / 2047.0f;
+	float brakeDistance=minBrakeDistance+(maxBrakeDistance-minBrakeDistance)*speed_ratio/0.5;
+	if (this->is_Stopped)
+	{
+		if ((now-this->stop_time).seconds()<STOP_DURATION)
+		{
+			this->speed=0;
+			write_pkg();
+			return;
+		}
+		else{
+			this->is_Stopped=false;
+			RCLCPP_INFO(this->get_logger(), "Emergency Stop Timeout finished. Resuming...");
+		}
+		
+	}
+	
 	// EMERGENCY STOP LOGIKA
-    // Ako je prepreka bliža od 20cm (a nije 0, što može biti greška senzora)
-    if (ultrasound_distances[0] > 0.1f && ultrasound_distances[0] < 5.0f) {//privremeno 5cm
+    // Ako je prepreka bliža od XXcm (a nije 0, što može biti greška senzora)
+    if (ultrasound_distances[0] > 0.1f && ultrasound_distances[0] < brakeDistance) {
 		//Ukoliko pokusava da se krece napred kocimo, moze da ide samo u rikverc
 		if (final_speed > 0)
 		{
 			RCLCPP_WARN(this->get_logger(), "Emergency Stop! Distance: %.2f cm", ultrasound_distances[0]);
         	final_speed = 0;
+			this->is_Stopped=true;
+			this->stop_time=this->get_clock()->now();
 		}
     }
 
