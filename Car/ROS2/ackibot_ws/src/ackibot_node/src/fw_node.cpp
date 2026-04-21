@@ -34,7 +34,7 @@ FW_Node::FW_Node(const std::string & usb_port)
 		rclcpp::NodeOptions().use_intra_process_comms(true)
 	),
 	//inicijalizacija clanova klase
-	watchdog_cnt(0),
+	watchdog_cnt(0)
 	//is_Stopped(false),
 	//stop_time(0,0,RCL_ROS_TIME)
 {
