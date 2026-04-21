@@ -36,7 +36,7 @@ FW_Node::FW_Node(const std::string & usb_port)
 	//inicijalizacija clanova klase
 	watchdog_cnt(0),
 	is_Stopped(false),
-	stop_time(0,0,RCL_COS_TIME)
+	stop_time(0,0,RCL_ROS_TIME)
 {
 	RCLCPP_INFO(get_logger(), "Init FW_Node Node Main");
 
@@ -254,6 +254,12 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 //callback funkcija koja periodicno proverava i azurira stanje motora i ako nisu stigle nove komande
 void FW_Node::repeater__cb() {
 	watchdog_dec();
+
+	if(watchdog_cnt == 0){
+		final_speed = 0;
+		this->steering_angle = 90;
+	}
+	
 	rclcpp::Time now = this->get_clock()->now();
 	float speed_ratio = std::abs(static_cast<float>(final_speed)) / 2047.0f;
 	float brakeDistance=minBrakeDistance+(maxBrakeDistance-minBrakeDistance)*speed_ratio/0.5;
