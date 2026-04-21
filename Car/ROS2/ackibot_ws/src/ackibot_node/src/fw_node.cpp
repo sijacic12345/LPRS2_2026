@@ -259,7 +259,8 @@ void FW_Node::repeater__cb() {
 		final_speed = 0;
 		this->steering_angle = 90;
 	}
-	
+	final_speed=target_speed;
+
 	rclcpp::Time now = this->get_clock()->now();
 	float speed_ratio = std::abs(static_cast<float>(final_speed)) / 2047.0f;
 	float brakeDistance=minBrakeDistance+(maxBrakeDistance-minBrakeDistance)*speed_ratio/0.5;
@@ -291,10 +292,6 @@ void FW_Node::repeater__cb() {
 		}
     }
 
-	if(watchdog_cnt == 0){
-		final_speed = 0;
-		this->steering_angle = 90;
-	}
 	this->speed=final_speed;
 	write_pkg();
 }
