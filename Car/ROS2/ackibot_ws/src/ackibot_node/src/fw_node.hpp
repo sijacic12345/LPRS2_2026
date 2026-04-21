@@ -58,6 +58,8 @@ private:
 	float enc_tick_per_rev;
 	double tick_to_rad;
 
+
+	bool manual_reset_required=false;
 	//TODO Simplify
 	Wheels wheels_;
 
@@ -90,8 +92,8 @@ private:
 	const float maxBrakeDistance = 40.0f;
 	const double STOP_DURATION = 1.0; //u sekundama
 	// ------------------------------
-	bool is_Stopped=false;
-	rclcpp::Time stop_time;
+	//bool is_Stopped=false;
+	//rclcpp::Time stop_time;
 
 	std::thread read__thread;
 	void read__loop();

@@ -255,29 +255,25 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 void FW_Node::repeater__cb() {
 	watchdog_dec();
 
+	final_speed=target_speed;
+
 	if(watchdog_cnt == 0){
 		final_speed = 0;
 		this->steering_angle = 90;
 	}
-	final_speed=target_speed;
-
-	rclcpp::Time now = this->get_clock()->now();
-	float speed_ratio = std::abs(static_cast<float>(final_speed)) / 2047.0f;
-	float brakeDistance=minBrakeDistance+(maxBrakeDistance-minBrakeDistance)*speed_ratio/0.5;
-	if (this->is_Stopped)
-	{
-		if ((now-this->stop_time).seconds()<STOP_DURATION)
-		{
+	if(manual_reset_required){
+		if(target_speed<=0){
+			manual_reset_required=false;
+			RCLCPP_INFO(this->get_logger(),"You can drive now.")
+		}
+		else{
 			this->speed=0;
 			write_pkg();
 			return;
 		}
-		else{
-			this->is_Stopped=false;
-			RCLCPP_INFO(this->get_logger(), "Emergency Stop Timeout finished. Resuming...");
-		}
-		
 	}
+	float speed_ratio = std::abs(static_cast<float>(final_speed)) / 2047.0f;
+	float brakeDistance=minBrakeDistance+(maxBrakeDistance-minBrakeDistance)*speed_ratio/0.5;
 	
 	// EMERGENCY STOP LOGIKA
     // Ako je prepreka bliža od XXcm (a nije 0, što može biti greška senzora)
@@ -285,10 +281,9 @@ void FW_Node::repeater__cb() {
 		//Ukoliko pokusava da se krece napred kocimo, moze da ide samo u rikverc
 		if (final_speed > 0)
 		{
-			RCLCPP_WARN(this->get_logger(), "Emergency Stop! Distance: %.2f cm", ultrasound_distances[0]);
+			RCLCPP_WARN(this->get_logger(), "Emergency Stop! Distance: %.2f cm. Release throttle to reset.", ultrasound_distances[0]);
         	final_speed = 0;
-			this->is_Stopped=true;
-			this->stop_time=this->get_clock()->now();
+			manual_reset_required=true;
 		}
     }
 
