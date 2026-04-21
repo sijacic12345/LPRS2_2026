@@ -68,6 +68,7 @@ private:
 	i16 target_speed;
 	i16 speed;           // brzina kretanja napred/nazad (za BLDC)
 	i16 steering_angle;  // ugao skretanja volana (za servo)
+	i16 final_speed=0;
 	u8 watchdog_cnt;
 	void watchdog_rst();
 	void watchdog_dec();
