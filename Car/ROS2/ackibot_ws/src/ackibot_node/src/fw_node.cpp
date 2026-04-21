@@ -35,8 +35,8 @@ FW_Node::FW_Node(const std::string & usb_port)
 	),
 	//inicijalizacija clanova klase
 	watchdog_cnt(0),
-	is_Stopped(false),
-	stop_time(0,0,RCL_ROS_TIME)
+	//is_Stopped(false),
+	//stop_time(0,0,RCL_ROS_TIME)
 {
 	RCLCPP_INFO(get_logger(), "Init FW_Node Node Main");
 
@@ -264,7 +264,7 @@ void FW_Node::repeater__cb() {
 	if(manual_reset_required){
 		if(target_speed<=0){
 			manual_reset_required=false;
-			RCLCPP_INFO(this->get_logger(),"You can drive now.")
+			RCLCPP_INFO(this->get_logger(),"You can drive now.");
 		}
 		else{
 			this->speed=0;
