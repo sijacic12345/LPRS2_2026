@@ -171,10 +171,12 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 	//ako je nova komanda ispisuje se na konzolu
 	if(cmd_is_new){
 		//RCLCPP_DEBUG(
-		RCLCPP_INFO(
+		if(!manual_reset_required){
+			RCLCPP_INFO(
 			this->get_logger(),
 			"lin_vel: %f ang_vel: %f", cmd.linear.x, cmd.angular.z
 		);
+		}
 	}
 
 	
