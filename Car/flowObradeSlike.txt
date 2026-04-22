@@ -1,0 +1,9 @@
+1) stabilizator za kamericu
+2) crop -> roi
+3) rgb -> bfw (boja u crno belo)
+4) canny
+5) binarizovane ivice
+6) hough transformation (moze i nesto drugo
+7) dosta suma -> gausov (test kernel)
+8) odsjaj -> algoritamski + mozda pollaroid filter, ali paziti jer takodje menja boju
+9) ugao skretanja
