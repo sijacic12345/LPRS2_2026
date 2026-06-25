@@ -41,7 +41,7 @@ pipeline_str = (
     "v4l2src device=/dev/video0 ! video/x-raw,width=640,height=360,format=NV12 ! "
     "appsink name=mysink emit-signals=True sync=False ! "
     "appsrc name=mysrc caps=video/x-raw,format=I420,width=640,height=360,framerate=30/1 ! "
-    "videoconvert ! v4l2h264enc ! h264parse ! rtph264pay ! udpsink host=10.1.151.8 port=5600"
+    "videoconvert ! openh264enc bitrate=2000000 ! h264parse ! rtph264pay ! udpsink host=10.1.151.8 port=5600"
 )
 
 pipeline = Gst.parse_launch(pipeline_str)
