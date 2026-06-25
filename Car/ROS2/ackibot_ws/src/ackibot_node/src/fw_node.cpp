@@ -16,6 +16,7 @@ using namespace std::chrono_literals;
 
 #define REPEATER_HZ 25
 #define WATCHDOG_TIMEOUT_PERIODS 3
+#define MAX_AUTOMATIC_SPEED 0.2f
 
 
 #define L_WHEEL 0
