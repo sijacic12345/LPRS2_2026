@@ -7,14 +7,12 @@ from line_detection import detect_lines_logic
 
 Gst.init(None)
 
-print("Inicijalizacija pipeline-ova...")
-
-# 1. Kreiramo dva odvojena dela pipeline-a (sa ispravljenim parametrima za tvoju kameru)
-# Koristimo video/x-bayer i 640x480 kako v4l2-ctl kaže
+# 1. Pipeline za kameru: Koristi YUY2 format koji kamera sigurno podržava
 capture_pipe = Gst.parse_launch(
-    "v4l2src device=/dev/video0 ! video/x-bayer,width=640,height=480 ! videoconvert ! appsink name=mysink emit-signals=True sync=False"
+    "v4l2src device=/dev/video0 ! video/x-raw,format=YUY2,width=640,height=480 ! videoconvert ! appsink name=mysink emit-signals=True sync=False"
 )
 
+# 2. Pipeline za striming: Šalje obrađenu sliku na mrežu
 stream_pipe = Gst.parse_launch(
     "appsrc name=mysrc caps=video/x-raw,format=BGR,width=640,height=480,framerate=30/1 ! "
     "videoconvert ! openh264enc bitrate=2000000 ! h264parse ! rtph264pay ! udpsink host=10.1.151.8 port=5600"
@@ -24,34 +22,34 @@ sink = capture_pipe.get_by_name("mysink")
 appsrc = stream_pipe.get_by_name("mysrc")
 
 def on_new_sample(sink):
-    print("Dobijen frejm sa kamere!") # OVO ĆE POTVRDITI DA KAMERA RADI
     sample = sink.emit("pull-sample")
     buf = sample.get_buffer()
     
-    # Mapiranje i obrada
+    # Mapiranje bafera
     result, mapinfo = buf.map(Gst.MapFlags.READ)
-    # Pošto smo u pipeline-u radili videoconvert, format je sada BGR (3 kanala)
+    # 640x480 BGR matrica
     arr = np.ndarray((480, 640, 3), buffer=mapinfo.data, dtype=np.uint8)
     buf.unmap(mapinfo)
     
-    # Poziv tvoje logike
+    # POZIV TVOJE LOGIKE
     processed_frame, offset = detect_lines_logic(arr)
     
-    # Konverzija nazad za enkoder (treba mu BGR ili I420)
-    # Pošto naš appsrc caps očekuje BGR, šaljemo direktno
+    # Guranje nazad u stream pipeline
     new_buf = Gst.Buffer.new_allocate(None, processed_frame.nbytes, None)
     new_buf.fill(0, processed_frame.tobytes())
-    
-    # Guranje u drugi pipeline
     appsrc.emit("push-buffer", new_buf)
     
     return Gst.FlowReturn.OK
 
 sink.connect("new-sample", on_new_sample)
 
-print("Pokrećem pipeline...")
+print("Sistem pokrenut. Čekam frejmove...")
 capture_pipe.set_state(Gst.State.PLAYING)
 stream_pipe.set_state(Gst.State.PLAYING)
 
-print("Sistem radi! Čekam frejmove...")
-GLib.MainLoop().run()
+try:
+    GLib.MainLoop().run()
+except KeyboardInterrupt:
+    print("Gašenje...")
+    capture_pipe.set_state(Gst.State.NULL)
+    stream_pipe.set_state(Gst.State.NULL)
