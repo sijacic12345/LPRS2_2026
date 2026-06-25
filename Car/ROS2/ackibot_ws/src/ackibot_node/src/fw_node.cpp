@@ -165,7 +165,7 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 	//pravi referencu na deo poruke koji sadrzi linearne i ugaone brzine
 	geometry_msgs::msg::Twist& cmd = msg->twist;
 
-	float linear_x=std::clamp(static_cast<float>(cmd.linear.x),-0.2f,0.2f);
+	float linear_x=std::clamp(static_cast<float>(cmd.linear.x),-MAX_AUTOMATIC_SPEED,MAX_AUTOMATIC_SPEED);
 
 	//da li je trenutna komanda razlicita od prethodne
 	bool cmd_is_new = cmd != prev_cmd;
@@ -177,7 +177,7 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 		if(!manual_reset_required){
 			RCLCPP_INFO(
 			this->get_logger(),
-			"lin_vel: %f ang_vel: %f", cmd.linear.x, cmd.angular.z
+			"lin_vel: %f ang_vel: %f", linear_x, cmd.angular.z //OVDE SMO PROMENILI DA SE ISPISUJE OGRANICENA BRZINA
 		);
 		}
 	}
