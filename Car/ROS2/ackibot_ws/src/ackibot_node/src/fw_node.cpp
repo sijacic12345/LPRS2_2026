@@ -165,6 +165,8 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 	//pravi referencu na deo poruke koji sadrzi linearne i ugaone brzine
 	geometry_msgs::msg::Twist& cmd = msg->twist;
 
+	float linear_x=std::clamp(static_cast<float>(cmd.linear.x),-0.2f,0.2f);
+
 	//da li je trenutna komanda razlicita od prethodne
 	bool cmd_is_new = cmd != prev_cmd;
 	prev_cmd = cmd;
@@ -184,7 +186,8 @@ void FW_Node::cmd_vel__cb(const geometry_msgs::msg::TwistStamped::SharedPtr msg)
 	//PRETVARA NORMALIZOVANE BRZINE U VREDNOSTI ZA MOTORE (-2047, 2047)//////////////////////////////////////////////////////////////////////
 
 	// [-1.0, 1.0] -> [reverse, forward]
-	target_speed = static_cast<i16>(cmd.linear.x*2047);
+	//target_speed = static_cast<i16>(cmd.linear.x*2047); FULL SPEED
+	target_speed = static_cast<i16>(linear_x*2047);
 
 	// [1.0, -1.0] -> [left, right].
 	steering_angle = static_cast<i16>(((-cmd.angular.z + 1.0)/2.0 * 180));  //mapira ugaonu brzinu na uglove od 0 do 180
