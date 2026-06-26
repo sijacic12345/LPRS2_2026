@@ -293,7 +293,7 @@ def detect_lines(edges_img, original_img):
 
 # ── Glavna petlja ──────────────────────────────────────────────────────────────
 for i in range(1,154):
-    t0 = time.time()
+    t0 = time.perf_counter()
     filename   = f"slika{i}.jpg"
     input_path = os.path.join(input_folder, filename)
     if not os.path.exists(input_path):
@@ -329,6 +329,7 @@ for i in range(1,154):
     # Detekcija
     final_result, offset, left_line, right_line, center_line = detect_lines(edges_cleared, blurred)
     cv2.imwrite(os.path.join(output_folder, f"slika{i}_final.jpg"), final_result)
+    processing_time=time.perf_counter()-t0
 
     if offset is not None:
         if left_line is not None and right_line is not None:
@@ -339,9 +340,9 @@ for i in range(1,154):
             status = "SAMO LEVA → skreni desno"
         else:
             status = "SAMO DESNA → skreni levo"
-        print(f"  → offset: {offset:+d}px | {status}")
+        print(f"  → offset: {offset:+d}px | {status} | Trajanje: {processing_time:.4f}s")
     else:
-        print(f"  → traka nije detektovana")
+        print(f"  → traka nije detektovana | Trajanje: {processing_time:.4f}s")
     print(f"  → {time.time() - t0:.3f}s")
 
 print(f"\nGotovo!\nRezultati su u: {output_folder}\nOčišćeni Canny u: {canny_folder}\nHeatmape u: {heatmap_folder}")
