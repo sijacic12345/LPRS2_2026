@@ -14,9 +14,10 @@ capture_pipe = Gst.parse_launch(
 )
 
 # 2. Pipeline za striming (ostaje isti)
+# Izmeni stream_pipe u camera_streamer.py
 stream_pipe = Gst.parse_launch(
     "appsrc name=mysrc caps=video/x-raw,format=BGR,width=640,height=480,framerate=30/1 ! "
-    "videoconvert ! openh264enc bitrate=2000000 ! h264parse ! rtph264pay ! udpsink host=10.1.151.8 port=5600"
+    "videoconvert ! openh264enc ! h264parse ! video/x-h264,stream-format=byte-stream ! udpsink host=10.1.151.8 port=5600"
 )
 
 sink = capture_pipe.get_by_name("mysink")
