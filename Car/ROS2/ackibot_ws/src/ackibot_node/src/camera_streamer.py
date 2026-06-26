@@ -24,7 +24,14 @@ sink = capture_pipe.get_by_name("mysink")
 appsrc = stream_pipe.get_by_name("mysrc")
 
 def on_new_sample(sink):
-    print("DObijen Frame")
+    """
+    global frame_count
+    frame_count += 1
+    if frame_count % 3 !=0:
+        sample = sink.emit("pull-sample")
+        return Gst.FlowReturn.OK
+    """
+    print("Dobijen Frame")
     sample = sink.emit("pull-sample")
     buf = sample.get_buffer()
     
