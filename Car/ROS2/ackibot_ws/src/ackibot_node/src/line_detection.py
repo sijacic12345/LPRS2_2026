@@ -3,8 +3,8 @@ import numpy as np
 import time
 from itertools import combinations
 
-TAPE_WIDTH = 108
-TAPE_TOL   = 40
+TAPE_WIDTH = 33
+TAPE_TOL   = 12
 ANGLE_TOL  = 15
 MIN_ANGLE  = 10
 
@@ -86,6 +86,11 @@ def detect_lines_logic(frame):
     result = frame.copy()
     offset = 0
 
+    # Uvek crtaj sve Hough linije zeleno
+    if lines_filtered:
+        for x1, y1, x2, y2 in lines_filtered:
+            cv2.line(result, (x1, y1), (x2, y2), (0, 255, 0), 1)
+            
     pair = find_best_tape_pair(lines_filtered)
 
     if pair:
