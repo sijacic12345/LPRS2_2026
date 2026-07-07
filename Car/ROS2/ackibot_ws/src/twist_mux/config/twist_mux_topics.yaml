@@ -14,16 +14,25 @@ twist_mux:
         timeout : 0.5
         priority: 10
         expire_on_idle: false
-      joystick:
-        topic   : joy_vel
+
+      lane_follower:
+        topic   : /cmd_vel_auto
         timeout : 0.5
-        priority: 100
+        priority: 50
         expire_on_idle: true
+
       keyboard:
         topic   : key_vel
         timeout : 0.5
         priority: 90
         expire_on_idle: true
+
+      joystick:
+        topic   : joy_vel
+        timeout : 0.5
+        priority: 100
+        expire_on_idle: true
+
       tablet:
         topic   : tab_vel
         timeout : 0.5

@@ -16,6 +16,7 @@ endif()
 # Find ament packages and libraries for ament and system dependencies
 ################################################################################
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(nav_msgs REQUIRED)
@@ -27,17 +28,13 @@ find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 
-# Finds the pkg-config executable, adds the pkg_check_modules() function, among others.
 find_package(PkgConfig REQUIRED)
-# Create imported target with name PkgConfig::LIBSERIAL
 pkg_check_modules(LIBSERIAL REQUIRED IMPORTED_TARGET libserial)
 
 ################################################################################
 # Build
 ################################################################################
-include_directories(
-  include
-)
+include_directories(include)
 
 set(DEPENDENCIES
   "geometry_msgs"
@@ -68,8 +65,15 @@ ament_target_dependencies(${EXECUTABLE_NAME} ${DEPENDENCIES})
 ################################################################################
 # Install
 ################################################################################
-
 install(TARGETS ${EXECUTABLE_NAME}
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Python skripte
+install(PROGRAMS
+  src/lane_follower_node.py
+  src/line_detection.py
+  src/cmd_vel_filter_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -77,4 +81,5 @@ install(TARGETS ${EXECUTABLE_NAME}
 # Macro for ament package
 ################################################################################
 ament_export_include_directories(include)
+ament_cmake_python_package(ackibot_node)
 ament_package()
